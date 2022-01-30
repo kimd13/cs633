@@ -18,6 +18,7 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun LaunchScreen(
+    navigateToOnboarding: () -> Unit,
     navigateToHome: () -> Unit
 ) {
     val scale = remember { Animatable(0f) }
@@ -32,7 +33,7 @@ fun LaunchScreen(
                 })
         )
         delay(3000L)
-        navigateToHome()
+        navigateToOnboarding()
     }
 
     Box(

@@ -10,10 +10,12 @@ import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import edu.bu.cs633.ui.home.HomeScreen
 import edu.bu.cs633.ui.launch.LaunchScreen
+import edu.cs633.ui.OnboardingScreen
 
 object Destination {
     const val LAUNCH_ROUTE = "launch"
     const val HOME_ROUTE = "home"
+    const val ONBOARDING_ROUTE = "onboarding"
 }
 
 @ExperimentalAnimationApi
@@ -31,7 +33,14 @@ fun NavigationGraph(
     ) {
         composable(Destination.LAUNCH_ROUTE) {
             LaunchScreen(
+                navigateToOnboarding = actions.navigateToOnboarding,
                 navigateToHome = actions.navigateToHome
+            )
+        }
+
+        composable(Destination.ONBOARDING_ROUTE) {
+            OnboardingScreen(
+                onFinish = actions.navigateToHome
             )
         }
 
@@ -45,6 +54,14 @@ class Actions(navigationController: NavHostController) {
 
     val navigateToHome: () -> Unit = {
         navigationController.navigate(Destination.HOME_ROUTE) {
+            popUpTo(Destination.LAUNCH_ROUTE) {
+                inclusive = true
+            }
+        }
+    }
+
+    val navigateToOnboarding: () -> Unit = {
+        navigationController.navigate(Destination.ONBOARDING_ROUTE) {
             popUpTo(Destination.LAUNCH_ROUTE) {
                 inclusive = true
             }
