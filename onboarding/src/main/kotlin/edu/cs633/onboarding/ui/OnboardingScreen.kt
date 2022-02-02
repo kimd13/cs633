@@ -1,4 +1,4 @@
-package edu.cs633.ui
+package edu.cs633.onboarding.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -23,7 +23,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import edu.bu.onboarding.R
-import edu.cs633.ui.model.Page
+import edu.cs633.onboarding.ui.model.Page
 import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi

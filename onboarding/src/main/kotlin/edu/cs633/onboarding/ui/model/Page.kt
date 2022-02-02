@@ -1,4 +1,4 @@
-package edu.cs633.ui.model
+package edu.cs633.onboarding.ui.model
 
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
