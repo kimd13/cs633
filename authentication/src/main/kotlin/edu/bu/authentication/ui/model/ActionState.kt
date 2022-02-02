@@ -1,4 +1,4 @@
-package edu.bu.authentication.model
+package edu.bu.authentication.ui.model
 
 enum class ActionState {
     SIGN_IN,

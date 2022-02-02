@@ -1,4 +1,4 @@
-package edu.bu.authentication.model
+package edu.bu.authentication.ui.model
 
 sealed class AuthenticationState {
     object Idle : AuthenticationState()

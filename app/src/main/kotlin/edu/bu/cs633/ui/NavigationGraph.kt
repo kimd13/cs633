@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
-import edu.bu.authentication.AuthenticationScreen
+import edu.bu.authentication.ui.AuthenticationScreen
 import edu.bu.cs633.ui.home.HomeScreen
 import edu.bu.cs633.ui.launch.LaunchScreen
 import edu.cs633.onboarding.ui.OnboardingScreen

@@ -1,4 +1,4 @@
-package edu.bu.authentication
+package edu.bu.authentication.ui
 
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
@@ -6,11 +6,11 @@ import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.bu.authentication.model.ActionState
-import edu.bu.authentication.model.ActionState.SIGNED_IN
-import edu.bu.authentication.model.ActionState.SIGN_IN
-import edu.bu.authentication.model.AuthenticationState
-import edu.bu.authentication.model.AuthenticationState.*
+import edu.bu.authentication.ui.model.ActionState
+import edu.bu.authentication.ui.model.ActionState.SIGNED_IN
+import edu.bu.authentication.ui.model.ActionState.SIGN_IN
+import edu.bu.authentication.ui.model.AuthenticationState
+import edu.bu.authentication.ui.model.AuthenticationState.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package edu.bu.authentication
+package edu.bu.authentication.ui
 
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text

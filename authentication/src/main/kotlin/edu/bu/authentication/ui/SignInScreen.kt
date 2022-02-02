@@ -1,10 +1,11 @@
-package edu.bu.authentication
+package edu.bu.authentication.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
+import edu.bu.authentication.ui.model.AuthenticationState.Error
 
 @Composable
 fun SignInScreen(
