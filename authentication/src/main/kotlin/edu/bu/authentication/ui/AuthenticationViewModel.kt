@@ -10,13 +10,15 @@ import edu.bu.authentication.ui.model.ActionState
 import edu.bu.authentication.ui.model.ActionState.*
 import edu.bu.authentication.ui.model.AuthenticationState
 import edu.bu.authentication.ui.model.AuthenticationState.*
+import edu.bu.authentication.util.AlertManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthenticationViewModel @Inject constructor(
-    private val firebaseAuthentication: FirebaseAuth
+    private val firebaseAuthentication: FirebaseAuth,
+    private val alertManager: AlertManager
 ) : ViewModel() {
 
     private val user: FirebaseUser? = firebaseAuthentication.currentUser
@@ -46,7 +48,7 @@ class AuthenticationViewModel @Inject constructor(
         password: String,
         reEnteredPassword: String
     ) {
-        if (verifyInputs(email, password).not()) return
+        if (verifyInputs(email, password, reEnteredPassword).not()) return
         _authenticationState.value = Loading
         firebaseAuthentication.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
@@ -66,29 +68,54 @@ class AuthenticationViewModel @Inject constructor(
             }
     }
 
-    private fun verifyInputs(email: String, password: String): Boolean =
+    private fun verifyInputs(
+        email: String,
+        password: String,
+        reEnteredPassword: String? = null
+    ): Boolean =
         verifyEmail(email) &&
-                verifyPassword(password)
+                verifyPassword(password) &&
+                verifyReEnteredPassword(password, reEnteredPassword)
 
     private fun verifyEmail(email: String): Boolean =
         email.isNotEmpty().also {
-            _authenticationState.value = Error(message = "Invalid email.")
+            if (!it) {
+                val message = "Invalid email."
+                _authenticationState.value = Error(message)
+                alertManager.alert(message)
+            }
         }
 
     private fun verifyPassword(password: String): Boolean =
         password.isNotEmpty().also {
-            _authenticationState.value = Error(message = "Invalid password.")
+            if (!it) {
+                val message = "Invalid password."
+                _authenticationState.value = Error(message)
+                alertManager.alert(message)
+            }
         }
+
+    private fun verifyReEnteredPassword(password: String, reEnteredPassword: String?): Boolean {
+        if (reEnteredPassword == null) return true
+        return (reEnteredPassword == password).also {
+            if (!it) {
+                val message = "Re-entered password does not match."
+                _authenticationState.value = Error(message)
+                alertManager.alert(message)
+            }
+        }
+    }
+
 
     private fun handleUserSignInResult(task: Task<AuthResult>) {
         if (task.isSuccessful) {
             _authenticationState.value = Success
             _actionState.value = SIGNED_IN
         } else {
+            val message = task.exception?.localizedMessage
             _authenticationState.value =
-                Error(
-                    task.exception?.localizedMessage
-                )
+                Error(message)
+            alertManager.alert(message ?: "Something went wrong.")
         }
     }
 
@@ -97,10 +124,12 @@ class AuthenticationViewModel @Inject constructor(
     }
 
     fun onSignUpClicked() {
+        _authenticationState.value = Idle
         _actionState.value = SIGN_UP
     }
 
     fun onSignInClicked() {
+        _authenticationState.value = Idle
         _actionState.value = SIGN_IN
     }
 }
