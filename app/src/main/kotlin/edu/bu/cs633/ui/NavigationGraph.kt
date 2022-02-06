@@ -8,14 +8,16 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
+import edu.bu.authentication.ui.AuthenticationScreen
 import edu.bu.cs633.ui.home.HomeScreen
 import edu.bu.cs633.ui.launch.LaunchScreen
-import edu.cs633.ui.OnboardingScreen
+import edu.cs633.onboarding.ui.OnboardingScreen
 
 object Destination {
     const val LAUNCH_ROUTE = "launch"
     const val HOME_ROUTE = "home"
     const val ONBOARDING_ROUTE = "onboarding"
+    const val AUTHENTICATION_ROUTE = "authentication"
 }
 
 @ExperimentalAnimationApi
@@ -40,12 +42,20 @@ fun NavigationGraph(
 
         composable(Destination.ONBOARDING_ROUTE) {
             OnboardingScreen(
-                onFinish = actions.navigateToHome
+                onFinish = actions.navigateToAuthentication
             )
         }
 
         composable(Destination.HOME_ROUTE) {
-            HomeScreen()
+            HomeScreen(
+                navigateToAuthentication = actions.navigateToAuthentication
+            )
+        }
+
+        composable(Destination.AUTHENTICATION_ROUTE) {
+            AuthenticationScreen(
+                onFinish = actions.navigateToHome
+            )
         }
     }
 }
@@ -66,5 +76,9 @@ class Actions(navigationController: NavHostController) {
                 inclusive = true
             }
         }
+    }
+
+    val navigateToAuthentication: () -> Unit = {
+        navigationController.navigate(Destination.AUTHENTICATION_ROUTE)
     }
 }
