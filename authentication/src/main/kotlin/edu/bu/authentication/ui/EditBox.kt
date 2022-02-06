@@ -12,7 +12,6 @@ fun EmailEditBox(
 ) {
     OutlinedTextField(
         value = email,
-        placeholder = { Text(text = "Enter email.") },
         label = { Text(text = "Email") },
         onValueChange = onEmailChange,
         isError = isError
@@ -27,8 +26,21 @@ fun PasswordEditBox(
 ) {
     OutlinedTextField(
         value = password,
-        placeholder = { Text(text = "Enter password.") },
         label = { Text(text = "Password") },
+        onValueChange = onPasswordChange,
+        isError = isError
+    )
+}
+
+@Composable
+fun ReEnterPasswordEditBox(
+    password: String,
+    onPasswordChange: (String) -> Unit,
+    isError: Boolean
+) {
+    OutlinedTextField(
+        value = password,
+        label = { Text(text = "Re-enter Password") },
         onValueChange = onPasswordChange,
         isError = isError
     )

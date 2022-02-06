@@ -47,7 +47,9 @@ fun NavigationGraph(
         }
 
         composable(Destination.HOME_ROUTE) {
-            HomeScreen()
+            HomeScreen(
+                navigateToAuthentication = actions.navigateToAuthentication
+            )
         }
 
         composable(Destination.AUTHENTICATION_ROUTE) {

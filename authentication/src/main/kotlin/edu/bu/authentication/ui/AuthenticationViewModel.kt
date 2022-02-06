@@ -7,8 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.bu.authentication.ui.model.ActionState
-import edu.bu.authentication.ui.model.ActionState.SIGNED_IN
-import edu.bu.authentication.ui.model.ActionState.SIGN_IN
+import edu.bu.authentication.ui.model.ActionState.*
 import edu.bu.authentication.ui.model.AuthenticationState
 import edu.bu.authentication.ui.model.AuthenticationState.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -44,7 +43,8 @@ class AuthenticationViewModel @Inject constructor(
 
     fun signUpUser(
         email: String,
-        password: String
+        password: String,
+        reEnteredPassword: String
     ) {
         if (verifyInputs(email, password).not()) return
         _authenticationState.value = Loading
@@ -94,5 +94,13 @@ class AuthenticationViewModel @Inject constructor(
 
     fun singOut() {
         firebaseAuthentication.signOut()
+    }
+
+    fun onSignUpClicked() {
+        _actionState.value = SIGN_UP
+    }
+
+    fun onSignInClicked() {
+        _actionState.value = SIGN_IN
     }
 }
