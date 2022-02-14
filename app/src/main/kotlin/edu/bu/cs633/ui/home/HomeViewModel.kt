@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.bu.cs633.ui.home.model.NetworkData
+import edu.bu.cs633.ui.home.success.FilterOption
+import edu.bu.cs633.ui.home.success.FilterOption.*
 import edu.cs633.data.VaccinationRecordsRepository
 import edu.cs633.data.domain.VaccinationRecord
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +26,19 @@ class HomeViewModel @Inject constructor(
     private lateinit var vaccinationRecordsCopy: List<VaccinationRecord>
     private val _query: MutableStateFlow<String> = MutableStateFlow("")
     val query: StateFlow<String> = _query
+
+    private val _filteringOptions: MutableStateFlow<List<FilterOption>> = MutableStateFlow(
+        listOf(
+            LOCATION,
+            TOTAL_VACCINATIONS,
+            TOTAL_DISTRIBUTED,
+            PEOPLE_VACCINATED,
+            PEOPLE_FULLY_VACCINATED,
+            DAILY_VACCINATIONS,
+            TOTAL_BOOSTERS
+        )
+    )
+    val filteringOptions: StateFlow<List<FilterOption>> = _filteringOptions
 
     init {
         viewModelScope.launch {

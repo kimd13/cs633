@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Icon
-import androidx.compose.material.Surface
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.Composable
+import androidx.compose.material.icons.filled.Sort
+import androidx.compose.runtime.*
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -22,19 +21,19 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun SearchBar(
     query: String,
-    onQueryChanged: (String) -> Unit
+    onQueryChanged: (String) -> Unit,
+    options: List<FilterOption>
 ) {
+    var expanded by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
 
     Surface(
-        modifier = Modifier
-            .fillMaxWidth(),
-        elevation = 8.dp,
+        modifier = Modifier.fillMaxWidth(),
+        elevation = 8.dp
     ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row {
             TextField(
                 modifier = Modifier
-                    .fillMaxWidth(.9f)
                     .padding(8.dp),
                 value = query,
                 onValueChange = onQueryChanged,
@@ -49,6 +48,21 @@ fun SearchBar(
                     keyboardController?.hide()
                 })
             )
+            IconButton(
+                onClick = { expanded = true }
+            ) {
+                Icon(imageVector = Icons.Filled.Sort, contentDescription = "")
+                DropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false }
+                ) {
+                    options.forEach { option ->
+                        DropdownMenuItem(onClick = { expanded = false }) {
+                            Text(text = option.value)
+                        }
+                    }
+                }
+            }
         }
     }
 }
