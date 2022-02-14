@@ -24,8 +24,20 @@ class HomeViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             vaccinationRecordsRepository.get().collect {
-                _vaccinationRecords.emit(NetworkData.Success(it))
+                _vaccinationRecords.emit(NetworkData.Success(filterLatestStateData(it)))
             }
         }
+    }
+
+    private fun filterLatestStateData(
+        vaccinationRecords: List<VaccinationRecord>
+    ): List<VaccinationRecord> {
+        val uniqueStateMap: HashMap<String, VaccinationRecord> = hashMapOf()
+        vaccinationRecords.forEach { record ->
+            uniqueStateMap[record.location] = record
+        }
+        return uniqueStateMap
+            .map { it.value }
+            .sortedBy { it.location }
     }
 }

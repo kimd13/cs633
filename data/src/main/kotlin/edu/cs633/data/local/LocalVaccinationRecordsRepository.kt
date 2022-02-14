@@ -31,8 +31,8 @@ class LocalVaccinationRecordsRepository @Inject constructor(
 
         while (line != null) {
             val tokens = line.split(",")
-            val date: String? = tokens[0].ifEmpty { null }
-            val location: String? = tokens[1].ifEmpty { null }
+            val date: String = tokens[0] // cannot be null
+            val location: String = tokens[1] // cannot be null
             val totalVaccinations: Float? = tokens[2].toFloatOrNull()
             val totalDistributed: Float? = tokens[3].toFloatOrNull()
             val peopleVaccinated: Float? = tokens[4].toFloatOrNull()
@@ -41,7 +41,8 @@ class LocalVaccinationRecordsRepository @Inject constructor(
             val totalBoosters: Int? = tokens[14].toIntOrNull()
             vaccinationRecords.add(
                 VaccinationRecord(
-                    date, location,
+                    date,
+                    location,
                     totalVaccinations,
                     totalDistributed,
                     peopleVaccinated,
