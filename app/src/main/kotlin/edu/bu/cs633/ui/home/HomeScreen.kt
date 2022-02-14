@@ -22,7 +22,10 @@ fun HomeScreen(
 
     when (vaccinationRecords) {
         is NetworkData.Success<List<VaccinationRecord>> -> {
-            SuccessScreen((vaccinationRecords as NetworkData.Success<List<VaccinationRecord>>).data)
+            SuccessScreen(
+                homeViewModel,
+                (vaccinationRecords as NetworkData.Success<List<VaccinationRecord>>).data
+            )
         }
         is NetworkData.Loading -> LoadingScreen()
         is NetworkData.Failure -> FailureScreen()

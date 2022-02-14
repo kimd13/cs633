@@ -21,12 +21,19 @@ class HomeViewModel @Inject constructor(
         MutableStateFlow(NetworkData.Loading)
     val vaccinationRecords: StateFlow<NetworkData<List<VaccinationRecord>>> = _vaccinationRecords
 
+    private val _query: MutableStateFlow<String> = MutableStateFlow("")
+    val query: StateFlow<String> = _query
+
     init {
         viewModelScope.launch {
             vaccinationRecordsRepository.get().collect {
                 _vaccinationRecords.emit(NetworkData.Success(filterLatestStateData(it)))
             }
         }
+    }
+
+    fun changeQuery(newQuery: String) {
+        _query.value = newQuery
     }
 
     private fun filterLatestStateData(
