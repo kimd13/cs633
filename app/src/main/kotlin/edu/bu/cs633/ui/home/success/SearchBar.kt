@@ -50,7 +50,10 @@ fun SearchBar(
                     },
                     keyboardActions = KeyboardActions(onDone = {
                         keyboardController?.hide()
-                    })
+                    }),
+                    placeholder = {
+                        Text(text = "Search by location")
+                    }
                 )
                 IconButton(
                     onClick = { expanded = true }
