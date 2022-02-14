@@ -13,7 +13,7 @@ fun StateList(
     LazyColumn {
         items(vaccinationRecords) { record ->
             Text(
-                text = record.location
+                text = record.location ?: "Not Available"
             )
         }
     }

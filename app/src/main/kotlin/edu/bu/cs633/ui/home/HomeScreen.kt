@@ -5,7 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
-import edu.bu.authentication.ui.SignOutButton
 import edu.bu.cs633.ui.home.failure.FailureScreen
 import edu.bu.cs633.ui.home.loading.LoadingScreen
 import edu.bu.cs633.ui.home.model.NetworkData
@@ -28,6 +27,4 @@ fun HomeScreen(
         is NetworkData.Loading -> LoadingScreen()
         is NetworkData.Failure -> FailureScreen()
     }
-
-    SignOutButton(navigateToAuthentication = navigateToAuthentication)
 }
