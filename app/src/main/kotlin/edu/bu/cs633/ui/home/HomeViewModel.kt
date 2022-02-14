@@ -58,6 +58,31 @@ class HomeViewModel @Inject constructor(
         _vaccinationRecords.value = NetworkData.Success(replacement)
     }
 
+    fun changeOption(newOption: FilterOption) {
+        val replacement = when (newOption) {
+            LOCATION -> vaccinationRecordsCopy.sortedBy { it.location }
+            TOTAL_VACCINATIONS -> vaccinationRecordsCopy.sortedWith(
+                compareBy(nullsLast()) { it.totalVaccinations }
+            )
+            TOTAL_DISTRIBUTED -> vaccinationRecordsCopy.sortedWith(
+                compareBy(nullsLast()) { it.totalDistributed }
+            )
+            PEOPLE_VACCINATED -> vaccinationRecordsCopy.sortedWith(
+                compareBy(nullsLast()) { it.peopleVaccinated }
+            )
+            PEOPLE_FULLY_VACCINATED -> vaccinationRecordsCopy.sortedWith(
+                compareBy(nullsLast()) { it.peopleFullyVaccinated }
+            )
+            DAILY_VACCINATIONS -> vaccinationRecordsCopy.sortedWith(
+                compareBy(nullsLast()) { it.dailyVaccinations }
+            )
+            TOTAL_BOOSTERS -> vaccinationRecordsCopy.sortedWith(
+                compareBy(nullsLast()) { it.totalBoosters }
+            )
+        }
+        _vaccinationRecords.value = NetworkData.Success(replacement)
+    }
+
     private fun filterLatestStateData(
         vaccinationRecords: List<VaccinationRecord>
     ): List<VaccinationRecord> {

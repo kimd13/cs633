@@ -24,7 +24,8 @@ fun SuccessScreen(
         SearchBar(
             query = query,
             onQueryChanged = { homeViewModel.changeQuery(it) },
-            options = options
+            options = options,
+            onOptionChanged = { homeViewModel.changeOption(it) }
         )
         StateList(vaccinationRecords = vaccinationRecords)
     }

@@ -22,7 +22,8 @@ import androidx.compose.ui.unit.dp
 fun SearchBar(
     query: String,
     onQueryChanged: (String) -> Unit,
-    options: List<FilterOption>
+    options: List<FilterOption>,
+    onOptionChanged: (FilterOption) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -57,7 +58,10 @@ fun SearchBar(
                     onDismissRequest = { expanded = false }
                 ) {
                     options.forEach { option ->
-                        DropdownMenuItem(onClick = { expanded = false }) {
+                        DropdownMenuItem(onClick = {
+                            onOptionChanged(option)
+                            expanded = false
+                        }) {
                             Text(text = option.value)
                         }
                     }
