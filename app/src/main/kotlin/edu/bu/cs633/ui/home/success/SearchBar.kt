@@ -1,5 +1,6 @@
 package edu.bu.cs633.ui.home.success
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,8 +23,9 @@ import androidx.compose.ui.unit.dp
 fun SearchBar(
     query: String,
     onQueryChanged: (String) -> Unit,
-    options: List<FilterOption>,
-    onOptionChanged: (FilterOption) -> Unit
+    option: SortOption,
+    options: List<SortOption>,
+    onOptionChanged: (SortOption) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -32,41 +34,48 @@ fun SearchBar(
         modifier = Modifier.fillMaxWidth(),
         elevation = 8.dp
     ) {
-        Row {
-            TextField(
-                modifier = Modifier
-                    .padding(8.dp),
-                value = query,
-                onValueChange = onQueryChanged,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done,
-                ),
-                leadingIcon = {
-                    Icon(imageVector = Icons.Filled.Search, "")
-                },
-                keyboardActions = KeyboardActions(onDone = {
-                    keyboardController?.hide()
-                })
-            )
-            IconButton(
-                onClick = { expanded = true }
-            ) {
-                Icon(imageVector = Icons.Filled.Sort, contentDescription = "")
-                DropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
+        Column {
+            Row {
+                TextField(
+                    modifier = Modifier
+                        .padding(8.dp),
+                    value = query,
+                    onValueChange = onQueryChanged,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done,
+                    ),
+                    leadingIcon = {
+                        Icon(imageVector = Icons.Filled.Search, "")
+                    },
+                    keyboardActions = KeyboardActions(onDone = {
+                        keyboardController?.hide()
+                    })
+                )
+                IconButton(
+                    onClick = { expanded = true }
                 ) {
-                    options.forEach { option ->
-                        DropdownMenuItem(onClick = {
-                            onOptionChanged(option)
-                            expanded = false
-                        }) {
-                            Text(text = option.value)
+                    Icon(imageVector = Icons.Filled.Sort, contentDescription = "")
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        options.forEach { option ->
+                            DropdownMenuItem(onClick = {
+                                onOptionChanged(option)
+                                expanded = false
+                            }) {
+                                Text(text = option.value)
+                            }
                         }
                     }
                 }
             }
+            Text(
+                modifier = Modifier
+                    .padding(8.dp),
+                text = "Sorted by: ${option.value}"
+            )
         }
     }
 }

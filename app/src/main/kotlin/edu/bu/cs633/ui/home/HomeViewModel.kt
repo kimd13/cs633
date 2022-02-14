@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.bu.cs633.ui.home.model.NetworkData
-import edu.bu.cs633.ui.home.success.FilterOption
-import edu.bu.cs633.ui.home.success.FilterOption.*
+import edu.bu.cs633.ui.home.success.SortOption
+import edu.bu.cs633.ui.home.success.SortOption.*
 import edu.cs633.data.VaccinationRecordsRepository
 import edu.cs633.data.domain.VaccinationRecord
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,7 +27,10 @@ class HomeViewModel @Inject constructor(
     private val _query: MutableStateFlow<String> = MutableStateFlow("")
     val query: StateFlow<String> = _query
 
-    private val _filteringOptions: MutableStateFlow<List<FilterOption>> = MutableStateFlow(
+    private val defaultOption = LOCATION
+    private val _option: MutableStateFlow<SortOption> = MutableStateFlow(defaultOption)
+    val option: StateFlow<SortOption> = _option
+    private val _sortOptions: MutableStateFlow<List<SortOption>> = MutableStateFlow(
         listOf(
             LOCATION,
             TOTAL_VACCINATIONS,
@@ -38,7 +41,7 @@ class HomeViewModel @Inject constructor(
             TOTAL_BOOSTERS
         )
     )
-    val filteringOptions: StateFlow<List<FilterOption>> = _filteringOptions
+    val sortOptions: StateFlow<List<SortOption>> = _sortOptions
 
     init {
         viewModelScope.launch {
@@ -51,6 +54,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun changeQuery(newQuery: String) {
+        _option.value = defaultOption
         _query.value = newQuery
         val replacement = vaccinationRecordsCopy.filter {
             it.location.lowercase().contains(newQuery.lowercase())
@@ -58,7 +62,9 @@ class HomeViewModel @Inject constructor(
         _vaccinationRecords.value = NetworkData.Success(replacement)
     }
 
-    fun changeOption(newOption: FilterOption) {
+    fun changeOption(newOption: SortOption) {
+        _query.value = ""
+        _option.value = newOption
         val replacement = when (newOption) {
             LOCATION -> vaccinationRecordsCopy.sortedBy { it.location }
             TOTAL_VACCINATIONS -> vaccinationRecordsCopy.sortedWith(

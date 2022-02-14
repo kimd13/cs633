@@ -16,7 +16,8 @@ fun SuccessScreen(
     vaccinationRecords: List<VaccinationRecord>
 ) {
     val query by remember { homeViewModel.query }.collectAsState()
-    val options by remember { homeViewModel.filteringOptions }.collectAsState()
+    val option by remember { homeViewModel.option }.collectAsState()
+    val options by remember { homeViewModel.sortOptions }.collectAsState()
 
     Column(
         Modifier.fillMaxSize()
@@ -24,6 +25,7 @@ fun SuccessScreen(
         SearchBar(
             query = query,
             onQueryChanged = { homeViewModel.changeQuery(it) },
+            option = option,
             options = options,
             onOptionChanged = { homeViewModel.changeOption(it) }
         )

@@ -1,6 +1,6 @@
 package edu.bu.cs633.ui.home.success
 
-enum class FilterOption(val value: String) {
+enum class SortOption(val value: String) {
     LOCATION("Location"),
     TOTAL_VACCINATIONS("Total vaccinations"),
     TOTAL_DISTRIBUTED("Total distributed"),
